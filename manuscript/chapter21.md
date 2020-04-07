@@ -4,26 +4,26 @@ This chapter will teach you how to retrieve data from a web server through HTTP 
 
 ## TL;DR
 
-* HTTP requests sent to a web server need to be **asynchronous** to prevent blocking the client application while waiting for the server's response.
+- HTTP requests sent to a web server need to be **asynchronous** to prevent blocking the client application while waiting for the server's response.
 
-* The JavaScript `fetch()` method is replacing `XMLHttpRequest` as the go-to way of creating an asynchronous request. Its `then()` and `catch()` methods respectively handle the success and failure of the request.
+- The JavaScript `fetch()` method is replacing `XMLHttpRequest` as the go-to way of creating an asynchronous request. Its `then()` and `catch()` methods respectively handle the success and failure of the request.
 
 ```js
 // Sends an asynchronous HTTP request to the target url
 fetch(url)
-  .then(() => {
+  .then((response) => {
     // Code called in the future when the request ends successfully
   })
-  .catch(() => {
+  .catch((error) => {
     // Code called in the future when an errors occurs during the request
-  });
+  })
 ```
 
-* The `fetch()` method demonstrates the use of **promises** to write asynchronous code in JavaScript. A promise is a wrapper for an operation whose result might be available in the future. It is either *pending* (initial state),  *fulfilled* (operation completed successfully) or *rejected* (operation failed).
+- The `fetch()` method demonstrates the use of **promises** to write asynchronous code in JavaScript. A promise is a wrapper for an operation whose result might be available in the future. It is either _pending_ (initial state), _fulfilled_ (operation completed successfully) or _rejected_ (operation failed).
 
-* JavaScript deals with JSON content with the `JSON.parse()` (to transform a JSON text into an object) and `JSON.stringify()` method (to do the opposite).
+- JavaScript deals with JSON content with the `JSON.parse()` (to transform a JSON text into an object) and `JSON.stringify()` method (to do the opposite).
 
-* The result of a call to `fetch()` is an HTTP `Response` object. Its `text()` and `json()` methods are used to read content as plain text or JSON data. These two methods return a promise that resolves either as a string or as JSON.
+- The result of a call to `fetch()` is an HTTP `Response` object. Its `text()` and `json()` methods are used to read content as plain text or JSON data. These two methods return a promise that resolves either as a string or as JSON.
 
 ## Creating asynchronous HTTP requests in JavaScript
 
@@ -36,12 +36,12 @@ The best way to send asynchronous HTTP requests in JavaScript is to use the `fet
 ```js
 // Sends an asynchronous HTTP request to the target url
 fetch(url)
-  .then(() => {
+  .then((response) => {
     // Code called in the future when the request ends successfully
   })
-  .catch(() => {
+  .catch((error) => {
     // Code called in the future when an errors occurs during the request
-  });
+  })
 ```
 
 > You might encounter JavaScript code that uses an object called `XMLHttpRequest` to perform HTTP operations. This is a more ancient technique now replaced by `fetch()`.
@@ -50,9 +50,9 @@ fetch(url)
 
 When the `fetch()` method is executed, it immediately returns a **promise**, which is a wrapper for an operation whose result might be available in the future. A promise is in one of these states:
 
-* *pending*: initial state, not fulfilled or rejected.
-* *fulfilled*: meaning that the operation completed successfully.
-* *rejected*: meaning that the operation failed.
+- _pending_: initial state, not fulfilled or rejected.
+- _fulfilled_: meaning that the operation completed successfully.
+- _rejected_: meaning that the operation failed.
 
 A JavaScript promise is an object with `then()` and `catch()` methods. `then()` is called when the promise is **fulfilled**. It takes the operation result as a parameter. On the contrary, `catch()` is called when the promise is **rejected**.
 
@@ -60,10 +60,10 @@ What's great about promises is that they can be chained together. Here's how you
 
 ```js
 getData()
-  .then(a => filterData(a)) // Called asynchronously when getData() returns
-  .then(b => processData(b)) // Called asynchronously when filterData() returns
-  .then(c => displayData(c)) // Called asynchronously when processData() returns
-  // ...
+  .then((a) => filterData(a)) // Called asynchronously when getData() returns
+  .then((b) => processData(b)) // Called asynchronously when filterData() returns
+  .then((c) => displayData(c)) // Called asynchronously when processData() returns
+// ...
 ```
 
 ### Example: retrieving a text file
@@ -77,14 +77,11 @@ C++;Java;C#;PHP
 Here's how to do this in JavaScript using `fetch()`.
 
 ```js
-fetch(
-  "https://raw.githubusercontent.com/bpesquet/thejsway/master/resources/languages.txt"
-)
-  .then(response => response.text()) // Access and return response's text content
-  .then(text => {
-    console.log(text); // Display file content in the console
-  });
-
+fetch('https://raw.githubusercontent.com/bpesquet/thejsway/master/resources/languages.txt')
+  .then((response) => response.text()) // Access and return response's text content
+  .then((text) => {
+    console.log(text) // Display file content in the console
+  })
 ```
 
 ![Execution result](images/chapter21-01.png)
@@ -98,10 +95,9 @@ To learn more about the `Response` object, consult, as usual, the [Mozilla Devel
 By nature, external HTTP requests are subject to errors: network failure, missing resource, etc. Handling these errors is done by adding a `catch()` method to the `fetch()` call. A basic level of error handling is to log the error message in the console.
 
 ```js
-fetch("http://non-existent-resource")
-  .catch(err => {
-    console.error(err.message);
-  });
+fetch('http://non-existent-resource').catch((err) => {
+  console.error(err.message)
+})
 ```
 
 ![Execution result](images/chapter21-02.png)
@@ -114,21 +110,21 @@ Let's advance to a more interesting and realistic scenario. Very often, data ava
 
 The JavaScript language offers native support for the JSON format:
 
-* The `JSON.parse()` method transforms a JSON string into a JavaScript object.
-* On the contrary, the `JSON.stringify()` method transforms a JavaScript object into a JSON string.
+- The `JSON.parse()` method transforms a JSON string into a JavaScript object.
+- On the contrary, the `JSON.stringify()` method transforms a JavaScript object into a JSON string.
 
 ```js
 // Define a JavaScript object
 const plane = {
-  manufacturer: "Airbus",
-  model: "A320"
-};
-console.log(plane); // Display the object
+  manufacturer: 'Airbus',
+  model: 'A320',
+}
+console.log(plane) // Display the object
 
-const planeText = JSON.stringify(plane);
-console.log(planeText); // Display the object as a JSON string
+const planeText = JSON.stringify(plane)
+console.log(planeText) // Display the object as a JSON string
 
-console.log(JSON.parse(planeText)); // Display the object
+console.log(JSON.parse(planeText)) // Display the object
 ```
 
 ![Execution result](images/chapter21-03.png)
@@ -139,27 +135,27 @@ These methods can also handle JSON arrays.
 // Define an array containing two objects
 const planes = [
   {
-    manufacturer: "Airbus",
-    model: "A320"
+    manufacturer: 'Airbus',
+    model: 'A320',
   },
   {
-    manufacturer: "Boeing",
-    model: "737"
-  }
-];
-console.log(planes); // Display the array of objects
+    manufacturer: 'Boeing',
+    model: '737',
+  },
+]
+console.log(planes) // Display the array of objects
 
-const planesText = JSON.stringify(planes);
-console.log(planesText); // Display the array as a JSON string
+const planesText = JSON.stringify(planes)
+console.log(planesText) // Display the array as a JSON string
 
-console.log(JSON.parse(planesText)); // Display the array of objects
+console.log(JSON.parse(planesText)) // Display the array of objects
 ```
 
 ![Execution result](images/chapter21-04.png)
 
 ### Example: retrieving JSON content
 
- For example, the following JSON file `movies.json` contains information about some movies. This file defines an array containing three objects.
+For example, the following JSON file `movies.json` contains information about some movies. This file defines an array containing three objects.
 
 ```json
 [
@@ -184,20 +180,18 @@ console.log(JSON.parse(planesText)); // Display the array of objects
 Here's how to retrieve this file from its URL and display each movie title in the console.
 
 ```js
-fetch(
-  "https://raw.githubusercontent.com/bpesquet/thejsway/master/resources/movies.json"
-)
-  .then(response => response.json()) // Access and return response's JSON content
-  .then(movies => {
+fetch('https://raw.githubusercontent.com/bpesquet/thejsway/master/resources/movies.json')
+  .then((response) => response.json()) // Access and return response's JSON content
+  .then((movies) => {
     // Iterate on the movie array
-    movies.forEach(movie => {
+    movies.forEach((movie) => {
       // Display title of each movie
-      console.log(movie.title);
-    });
+      console.log(movie.title)
+    })
   })
-  .catch(err => {
-    console.error(err.message);
-  });
+  .catch((err) => {
+    console.error(err.message)
+  })
 ```
 
 ![Execution result](images/chapter21-05.png)
@@ -212,8 +206,7 @@ The objective of this exercise is to display the languages of the previous file 
 
 ```html
 <h2>A few programming languages</h2>
-<ul id="languageList">
-</ul>
+<ul id="languageList"></ul>
 ```
 
 Write the JavaScript code that fetches the file from the web server and fills the HTML list.
@@ -249,11 +242,11 @@ Start from the following HTML code.
 ```html
 <h2>Some famous paintings</h2>
 <table id="paintings">
-    <tr>
-        <th>Name</th>
-        <th>Year</th>
-        <th>Artist</th>
-    </tr>
+  <tr>
+    <th>Name</th>
+    <th>Year</th>
+    <th>Artist</th>
+  </tr>
 </table>
 ```
 
